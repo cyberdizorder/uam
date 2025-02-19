@@ -33,15 +33,14 @@ def extract_invoice_data(text):
     Tekst faktury: "{text}"
     Ekstrahuj następujące dane:
     - Numer NIP
-    - Sprzedawca
-    - Nabywca
+    - Adres sprzedawcy
     - Łączna kwota brutto
 
     Wynik w formacie JSON:
     """
 
     response = openai.Completion.create(
-        engine="text-davinci-003",
+        engine="gpt-3.5-turbo-instruct",
         prompt=prompt,
         max_tokens=1000,
         temperature=0.3
