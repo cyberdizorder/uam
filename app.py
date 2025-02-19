@@ -33,22 +33,21 @@ def extract_invoice_data(text):
     Tekst faktury: "{text}"
     Ekstrahuj następujące dane:
     - Numer NIP
-    - Adres sprzedawcy
+    - Sprzedawca
+    - Nabywca
     - Łączna kwota brutto
 
     Wynik w formacie JSON:
     """
 
-    response = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "Jesteś asystentem, który pomaga w ekstrakcji danych z faktur."},
-            {"role": "user", "content": prompt}
-        ]
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=prompt,
+        max_tokens=1000,
+        temperature=0.3
     )
     
-    data = response.choices[0].message.content.strip()
-    return data
+    return response.choices[0].text.strip()
 
 # Endpoint do przetwarzania faktur
 @app.post("/invoice")
