@@ -11,6 +11,9 @@ app = FastAPI()
 # Konfiguracja klucza OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+# Ustawienie ścieżki do plików treningowych Tesseract
+os.environ['TESSDATA_PREFIX'] = '/app/.apt/usr/share/tesseract-ocr/5/tessdata/'
+
 # Funkcja do ekstrakcji tekstu z PDF
 def extract_text_from_pdf(pdf_bytes):
     try:
