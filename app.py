@@ -12,12 +12,17 @@ app = FastAPI()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Funkcja do ekstrakcji tekstu z PDF
-def extract_text_from_pdf(file_bytes):
-    images = convert_from_bytes(file_bytes)
-    text = ""
-    for img in images:
-        text += pytesseract.image_to_string(img, lang='pol')
-    return text
+def extract_text_from_pdf(pdf_bytes):
+    try:
+        # Dodaj parametr lang='pol' do pytesseract
+        images = convert_from_bytes(pdf_bytes)
+        text = ""
+        for image in images:
+            text += pytesseract.image_to_string(image, lang='pol', config='--psm 6')
+        return text
+    except Exception as e:
+        print(f"Błąd podczas ekstrakcji tekstu: {str(e)}")
+        raise e
 
 # Funkcja do ekstrakcji danych za pomocą OpenAI API
 def extract_invoice_data(text):
