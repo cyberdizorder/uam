@@ -43,14 +43,25 @@ def extract_invoice_data(text):
 # Endpoint do przetwarzania faktur
 @app.post("/invoice")
 async def process_invoice(file: UploadFile = File(...)):
+    print(f"Otrzymano plik: {file.filename}")  # Debugging
+    
     if not file.filename.endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Plik musi być w formacie PDF.")
     
-    file_bytes = await file.read()
-    text = extract_text_from_pdf(file_bytes)
-    extracted_data = extract_invoice_data(text)
-    
-    return JSONResponse(content=eval(extracted_data))
+    try:
+        file_bytes = await file.read()
+        print(f"Rozmiar pliku w bajtach: {len(file_bytes)}")  # Debugging
+        
+        text = extract_text_from_pdf(file_bytes)
+        print(f"Wyekstrahowany tekst: {text[:200]}...")  # Debugging
+        
+        extracted_data = extract_invoice_data(text)
+        print(f"Dane z OpenAI: {extracted_data}")  # Debugging
+        
+        return JSONResponse(content=eval(extracted_data))
+    except Exception as e:
+        print(f"Wystąpił błąd: {str(e)}")  # Debugging
+        raise HTTPException(status_code=500, detail=f"Błąd przetwarzania: {str(e)}")
 
 @app.get("/")
 async def root():
