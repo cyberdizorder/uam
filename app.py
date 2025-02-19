@@ -51,3 +51,7 @@ async def process_invoice(file: UploadFile = File(...)):
     extracted_data = extract_invoice_data(text)
     
     return JSONResponse(content=eval(extracted_data))
+
+@app.get("/")
+async def root():
+    return {"message": "Witaj w API do przetwarzania faktur. Użyj endpointu /invoice z metodą POST aby przetworzyć fakturę."}
