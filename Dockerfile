@@ -10,8 +10,12 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Ustawienie zmiennej środowiskowej TESSDATA_PREFIX
-ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/4.00/tessdata/
+# Sprawdzamy faktyczną ścieżkę do tessdata
+RUN tesseract --version && \
+    ls -la /usr/share/tesseract-ocr/
+
+# Ustawienie zmiennej środowiskowej TESSDATA_PREFIX dla wersji 5
+ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/5/tessdata/
 
 RUN pip install --no-cache-dir -r requirements.txt
 
